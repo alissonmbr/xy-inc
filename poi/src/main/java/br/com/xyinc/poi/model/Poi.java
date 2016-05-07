@@ -8,6 +8,10 @@ public class Poi {
     private int x;
     private int y;
 
+    public Poi() {
+
+    }
+
     public Poi(String name, int x, int y) {
         this.name = name;
         this.x = x;
