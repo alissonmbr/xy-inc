@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.List;
@@ -19,6 +20,7 @@ import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(Application.class)
+@TestPropertySource(locations="classpath:test.properties")
 public class PoiDaoTest {
     @Autowired
     private PoiDAO poiDAO;
@@ -26,7 +28,25 @@ public class PoiDaoTest {
     @Test
     public void findAllPois() {
         List<Poi> pois = poiDAO.findAll();
+        System.out.println("FindALL:" + pois);
         assertNotNull(pois);
         assertTrue(!pois.isEmpty());
+    }
+
+    @Test
+    public void findByReference() {
+        List<Poi> pois = poiDAO.findByReference(20, 10, 10);
+        System.out.println("FindByReference" + pois);
+        assertNotNull(pois);
+        assertTrue(!pois.isEmpty());
+    }
+
+    @Test
+    public void addPoi() {
+        Poi poi = new Poi("Sushi Bar", 0, 0);
+
+        poiDAO.addPoi(poi);
+        System.out.println("Add POI: " + poi);
+        assertNotNull(poi.getId());
     }
 }

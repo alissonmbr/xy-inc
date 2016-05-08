@@ -4,6 +4,7 @@ package br.com.xyinc.poi.model;
  * Created by alisson on 5/4/16.
  */
 public class Poi {
+    private Integer id;
     private String name;
     private int x;
     private int y;
@@ -16,6 +17,14 @@ public class Poi {
         this.name = name;
         this.x = x;
         this.y = y;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -45,7 +54,8 @@ public class Poi {
     @Override
     public String toString() {
         return "Poi{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", x=" + x +
                 ", y=" + y +
                 '}';
