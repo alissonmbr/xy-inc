@@ -1,3 +1,4 @@
 poi/.idea/*
 *.iml
 poi/target/*
+poi/poi.log

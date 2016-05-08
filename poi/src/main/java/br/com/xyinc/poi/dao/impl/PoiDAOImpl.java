@@ -3,6 +3,7 @@ package br.com.xyinc.poi.dao.impl;
 import br.com.xyinc.poi.dao.PoiDAO;
 import br.com.xyinc.poi.exception.PoiDAOException;
 import br.com.xyinc.poi.model.Poi;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -24,6 +25,8 @@ import java.util.Map;
 @Repository
 public class PoiDAOImpl implements PoiDAO {
 
+    final static Logger logger = Logger.getLogger(PoiDAOImpl.class);
+
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
@@ -33,7 +36,8 @@ public class PoiDAOImpl implements PoiDAO {
             String sql = "select * from poischema.poi";
             return jdbcTemplate.query(sql, new PoiRowMapper());
         } catch (DataAccessException e) {
-            throw new PoiDAOException("Error to find all pois: " + e.getMessage(), e);
+            logger.error("Error to find all pois: " + e.getMessage(), e);
+            throw new PoiDAOException("Error to find all pois!");
         }
     }
 
@@ -43,7 +47,8 @@ public class PoiDAOImpl implements PoiDAO {
             String sql = "select * from poischema.poi where sqrt(power((?-x),2)+power((?-y),2)) <= ?";
             return jdbcTemplate.query(sql, new Object[]{x, y, d}, new PoiRowMapper());
         } catch (DataAccessException e) {
-            throw new PoiDAOException("Error to find poi by reference: " + e.getMessage(), e);
+            logger.error("Error to find poi by reference: " + e.getMessage(), e);
+            throw new PoiDAOException("Error to find poi by reference!");
         }
     }
 
@@ -65,7 +70,8 @@ public class PoiDAOImpl implements PoiDAO {
 
             return poi;
         } catch (DataAccessException e) {
-            throw new PoiDAOException("Error to insert poi: " + e.getMessage(), e);
+            logger.error("Error to insert poi: " + e.getMessage(), e);
+            throw new PoiDAOException("Error to insert poi!");
         }
     }
 }

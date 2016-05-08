@@ -56,7 +56,7 @@ public class PoiDaoTest {
 
     @Test
     public void addPoi() {
-        Poi poi = new Poi("Lanchonete", 0, 0);
+        Poi poi = new Poi("Padaria", 0, 0);
 
         poiDAO.addPoi(poi);
         System.out.println("Add POI: " + poi);
