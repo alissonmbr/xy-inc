@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.nio.charset.Charset;
+
 /**
  * Created by alisson on 5/8/16.
  */
@@ -24,7 +26,9 @@ public class ControllerErrorHandler extends ResponseEntityExceptionHandler {
         ErrorResource error = new ErrorResource("1", exception.getMessage());
 
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setContentType(new MediaType(MediaType.APPLICATION_JSON.getType(),
+                MediaType.APPLICATION_JSON.getSubtype(),
+                Charset.forName("utf8")));
 
         return handleExceptionInternal(e, error, headers, HttpStatus.UNPROCESSABLE_ENTITY, request);
     }
@@ -36,8 +40,10 @@ public class ControllerErrorHandler extends ResponseEntityExceptionHandler {
         ErrorResource error = new ErrorResource("2", exception.getMessage());
 
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setContentType(new MediaType(MediaType.APPLICATION_JSON.getType(),
+                MediaType.APPLICATION_JSON.getSubtype(),
+                Charset.forName("utf8")));
 
-        return handleExceptionInternal(e, error, headers, HttpStatus.UNPROCESSABLE_ENTITY, request);
+        return handleExceptionInternal(e, error, headers, HttpStatus.BAD_REQUEST, request);
     }
 }
