@@ -1,14 +1,14 @@
 package br.com.xyinc.poi.dao.impl;
 
 import br.com.xyinc.poi.dao.PoiDAO;
+import br.com.xyinc.poi.exception.PoiDAOException;
 import br.com.xyinc.poi.model.Poi;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,36 +29,44 @@ public class PoiDAOImpl implements PoiDAO {
 
     @Transactional(readOnly = true)
     public List<Poi> findAll() {
-        String sql = "select * from poischema.poi";
-        return jdbcTemplate.query(sql, new PoiRowMapper());
+        try {
+            String sql = "select * from poischema.poi";
+            return jdbcTemplate.query(sql, new PoiRowMapper());
+        } catch (DataAccessException e) {
+            throw new PoiDAOException("Error to find all pois: " + e.getMessage(), e);
+        }
     }
 
     @Transactional(readOnly = true)
     public List<Poi> findByReference(int x, int y, int d) {
-        String sql = "select * from poischema.poi where sqrt(power((?-x),2)+power((?-y),2)) <= ?";
-        return jdbcTemplate.query(sql, new Object[]{x, y, d}, new PoiRowMapper());
+        try {
+            String sql = "select * from poischema.poi where sqrt(power((?-x),2)+power((?-y),2)) <= ?";
+            return jdbcTemplate.query(sql, new Object[]{x, y, d}, new PoiRowMapper());
+        } catch (DataAccessException e) {
+            throw new PoiDAOException("Error to find poi by reference: " + e.getMessage(), e);
+        }
     }
 
     @Transactional(readOnly = false)
     public Poi addPoi(Poi poi) {
-        SimpleJdbcInsert insert = new SimpleJdbcInsert(jdbcTemplate);
-        insert.withSchemaName("poischema");
-        insert.withTableName("poi");
-        insert.usingGeneratedKeyColumns("id");
+        try {
+            SimpleJdbcInsert insert = new SimpleJdbcInsert(jdbcTemplate);
+            insert.withSchemaName("poischema");
+            insert.withTableName("poi");
+            insert.usingGeneratedKeyColumns("id");
 
-        Map<String, Object> parameters = new HashMap<String, Object>();
-        parameters.put("name", poi.getName());
-        parameters.put("x", poi.getX());
-        parameters.put("y", poi.getY());
+            Map<String, Object> parameters = new HashMap<String, Object>();
+            parameters.put("name", poi.getName());
+            parameters.put("x", poi.getX());
+            parameters.put("y", poi.getY());
 
-        Number key = insert.executeAndReturnKey(new MapSqlParameterSource(parameters));
+            Number key = insert.executeAndReturnKey(new MapSqlParameterSource(parameters));
+            poi.setId(key.intValue());
 
-
-//        String sql = "insert into poischema.poi(name, x, y) values(?, ?, ?)";
-//        insert.executeAndReturnKey(sql, new Object[]{poi.getName(), poi.getX(), poi.getY()});
-//        jdbcTemplate.update(sql, new Object[]{poi.getName(), poi.getX(), poi.getY()}, holder);
-        poi.setId(key.intValue());
-        return poi;
+            return poi;
+        } catch (DataAccessException e) {
+            throw new PoiDAOException("Error to insert poi: " + e.getMessage(), e);
+        }
     }
 }
 
