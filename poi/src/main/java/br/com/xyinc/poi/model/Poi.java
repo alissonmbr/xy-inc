@@ -6,14 +6,14 @@ package br.com.xyinc.poi.model;
 public class Poi {
     private Integer id;
     private String name;
-    private int x;
-    private int y;
+    private Integer x;
+    private Integer y;
 
     public Poi() {
 
     }
 
-    public Poi(String name, int x, int y) {
+    public Poi(String name, Integer x, Integer y) {
         this.name = name;
         this.x = x;
         this.y = y;
@@ -35,19 +35,19 @@ public class Poi {
         this.name = name;
     }
 
-    public int getX() {
+    public Integer getX() {
         return x;
     }
 
-    public void setX(int x) {
+    public void setX(Integer x) {
         this.x = x;
     }
 
-    public int getY() {
+    public Integer getY() {
         return y;
     }
 
-    public void setY(int y) {
+    public void setY(Integer y) {
         this.y = y;
     }
 
@@ -68,17 +68,19 @@ public class Poi {
 
         Poi poi = (Poi) o;
 
-        if (x != poi.x) return false;
-        if (y != poi.y) return false;
-        return name.equals(poi.name);
+        if (!id.equals(poi.id)) return false;
+        if (name != null ? !name.equals(poi.name) : poi.name != null) return false;
+        if (x != null ? !x.equals(poi.x) : poi.x != null) return false;
+        return y != null ? y.equals(poi.y) : poi.y == null;
 
     }
 
     @Override
     public int hashCode() {
-        int result = name.hashCode();
-        result = 31 * result + x;
-        result = 31 * result + y;
+        int result = id.hashCode();
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (x != null ? x.hashCode() : 0);
+        result = 31 * result + (y != null ? y.hashCode() : 0);
         return result;
     }
 }

@@ -39,6 +39,19 @@ public class PoiDaoTest {
         System.out.println("FindByReference" + pois);
         assertNotNull(pois);
         assertTrue(!pois.isEmpty());
+        assertTrue(containsPoi(pois, "Lanchonete"));
+        assertTrue(containsPoi(pois, "Joalheria"));
+        assertTrue(containsPoi(pois, "Pub"));
+        assertTrue(containsPoi(pois, "Supermercado"));
+    }
+
+    private boolean containsPoi(List<Poi> pois, String poiName) {
+        for (Poi p : pois) {
+            if (p.getName().equalsIgnoreCase(poiName))
+                return true;
+        }
+
+        return false;
     }
 
     @Test
