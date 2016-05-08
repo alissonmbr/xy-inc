@@ -4,6 +4,7 @@ package br.com.xyinc.poi.controller;
  * Created by alisson on 5/4/16.
  */
 import br.com.xyinc.poi.dao.PoiDAO;
+import br.com.xyinc.poi.exception.PoiControllerErrorException;
 import br.com.xyinc.poi.model.Poi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,9 @@ public class POIController {
 
     @RequestMapping("/add")
     public Poi addPoi(@RequestParam(value="name") String name, @RequestParam(value="x") int x, @RequestParam(value="y") int y) {
+        if (x < 0 || y < 0) {
+            throw new PoiControllerErrorException("X and Y must be nonnegative integer numbers!");
+        }
         return poiDAO.addPoi(new Poi(name, x, y));
     }
 
@@ -30,6 +34,9 @@ public class POIController {
 
     @RequestMapping("/reference")
     public List<Poi> listByReference(@RequestParam(value="x") int x, @RequestParam(value="y") int y, @RequestParam(value="d") int d) {
+        if (x < 0 || y < 0 || d < 0) {
+            throw new PoiControllerErrorException("X and Y and d must be nonnegative integer numbers!");
+        }
         return poiDAO.findByReference(x, y, d);
     }
 
