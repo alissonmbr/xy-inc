@@ -30,8 +30,7 @@ USER postgres
 #       allows the RUN command to span multiple lines.
 RUN    /etc/init.d/postgresql start &&\
     psql --command "CREATE USER poi WITH SUPERUSER PASSWORD 'poi123';" &&\
-    createdb -O poi poi &&\
-    psql -d poi --command "CREATE SCHEMA poischema;CREATE TABLE poischema.poi(id INTEGER, name VARCHAR(100), x INTEGER, y INTEGER, PRIMARY KEY(id));"
+    createdb -O poi poi
 
 # Adjust PostgreSQL configuration so that remote connections to the
 # database are possible.

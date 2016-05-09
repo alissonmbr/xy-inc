@@ -58,7 +58,7 @@ public class POIControllerTest {
 
     @Test
     public void add() throws Exception {
-        mockMvc.perform(get("/add?name=Loja1&x=100&y=100"))
+        mockMvc.perform(get("/add/Loja1/100/100"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
                 .andReturn();
@@ -66,7 +66,7 @@ public class POIControllerTest {
 
     @Test
     public void addError() throws Exception {
-        mockMvc.perform(get("/add?name=Loja1&x=100&y=-100"))
+        mockMvc.perform(get("/add/Loja1/100/-100"))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().contentType(contentType))
                 .andReturn();
@@ -74,7 +74,7 @@ public class POIControllerTest {
 
     @Test
     public void getByReference() throws Exception {
-        mockMvc.perform(get("/reference?x=20&y=10&d=10"))
+        mockMvc.perform(get("/reference/20/10/10"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
                 .andReturn();
@@ -82,7 +82,7 @@ public class POIControllerTest {
 
     @Test
     public void getByReferenceError() throws Exception {
-        mockMvc.perform(get("/reference?x=20&y=10&d=-10"))
+        mockMvc.perform(get("/reference/20/10/-10"))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().contentType(contentType))
                 .andReturn();
